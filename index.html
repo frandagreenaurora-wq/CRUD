@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="data.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+    <h2>Input Data Siswa</h2>
+
+    <div class="input">
+    <input type="text" id="nama" placeholder="Masukan Nama"><br><br>
+    <input type="text" id="kelas" placeholder="Masukan Kelas"><br><br>
+    <input type="number" id="nilai" placeholder="Masukan Nilai"><br><br>
+    </div>
+    <button onclick="tambah()">Tambah Data</button>
+    
+    
+    <!-- <button onclick="update()">Update</button> -->
+    
+    <div id="hasil"><h2>Daftar Siswa</h2></div>
+    </div>
+
+
+
+    <script>
+        let data = [];
+        let edit = -1;
+
+        function tambah(){
+            let nama = document.getElementById("nama").value;
+            let kelas = document.getElementById("kelas").value;
+            let nilai = parseFloat(document.getElementById("nilai").value);
+
+            let status ;
+            if(nilai >=75){
+                status = "Lulus"
+            }else{
+                status = "Tidak Lulus"
+            }
+
+            let grade ;
+            if(nilai >= 90){
+                grade = "A";
+            }else if(nilai >= 80){
+                grade = "B";
+            }else if(nilai >= 70){
+                grade = "C";
+            }else if(nilai >= 60){
+                grade = "D";
+            }else{
+                grade = "E";
+            }
+
+            if(edit === -1){
+                data.push({nama, kelas, nilai, status, grade});
+            }else{
+                data[edit] = {nama, kelas, nilai, status, grade};
+                edit = -1;
+            }
+            tampilkanData();
+            clearInput();
+
+        }
+
+        function tampilkanData(){
+            let daftar = document.getElementById("hasil");
+            daftar.innerHTML = "<h2>Daftar Siswa<h2>";
+            
+            for(let i = 0; i < data.length; i++){
+                let siswa = data[i];
+                hasil.innerHTML += `
+                <p> 
+                    Nama : ${siswa.nama}<br>  
+                    Kelas : ${siswa.kelas}<br>  
+                    Nilai : ${siswa.nilai}<br> 
+                    Status : ${siswa.status}<br>  
+                    Grade : ${siswa.grade}<br>
+                    <button onclick="editData(${i})">Edit</button>
+                    <button onclick="hapusData(${i})">Hapus</button>
+                </p>
+                `;
+            }
+        }
+
+        function editData(i) {
+            edit = i;
+            document.getElementById("nama").value = data[i].nama;
+            document.getElementById("kelas").value = data[i].kelas;
+            document.getElementById("nilai").value = data[i].nilai;
+
+            data.splice(i, 1);
+            tampilkanData();
+        }
+
+        function hapusData(i){
+            data.splice(i, 1);
+            tampilkanData();
+        }
+
+        function clearInput(){
+            document.getElementById("nama").value = "";
+            document.getElementById("kelas").value = "";
+            document.getElementById("nilai").value = "";
+        }
+
+    </script>
+</body>
+</html>
